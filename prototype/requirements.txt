@@ -1,0 +1,16 @@
+# Valurise MVP Prototype Dependencies
+
+# AI/LLM
+anthropic>=0.40.0
+
+# Data Processing
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# CLI Interface
+rich>=13.0.0
+typer>=0.9.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
