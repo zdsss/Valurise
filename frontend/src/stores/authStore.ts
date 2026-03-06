@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { User, UserDetail, LoginRequest, RegisterRequest } from '../types';
+import type { User, LoginRequest, RegisterRequest } from '../types';
 import { apiClient } from '../services/api';
 
 interface AuthState {
@@ -21,7 +21,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       accessToken: null,
       refreshToken: null,
