@@ -32,21 +32,21 @@ class AgentBase:
         """调用Claude API"""
         messages = [{"role": "user", "content": user_message}]
 
-        # 如果指定了response_model，使用结构化输出
+        # 如果指定了response_model，在system prompt中要求JSON输出
         if response_model:
+            json_schema = response_model.model_json_schema()
+            system_with_json = f"""{system}
+
+IMPORTANT: You must respond with valid JSON that matches this schema:
+{json.dumps(json_schema, indent=2)}
+
+Respond ONLY with the JSON object, no additional text."""
+
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=4096,
-                system=system,
-                messages=messages,
-                response_format={
-                    "type": "json_schema",
-                    "json_schema": {
-                        "name": "response",
-                        "strict": True,
-                        "schema": response_model.model_json_schema()
-                    }
-                }
+                system=system_with_json,
+                messages=messages
             )
         else:
             response = self.client.messages.create(
@@ -66,7 +66,23 @@ class AgentBase:
         content = response.content[0].text
 
         if response_model:
-            return json.loads(content)
+            # 清理可能的markdown代码块标记
+            content = content.strip()
+            if content.startswith("```json"):
+                content = content[7:]  # 移除 ```json
+            elif content.startswith("```"):
+                content = content[3:]  # 移除 ```
+            if content.endswith("```"):
+                content = content[:-3]  # 移除结尾的 ```
+            content = content.strip()
+
+            # 尝试解析JSON
+            try:
+                return json.loads(content)
+            except json.JSONDecodeError as e:
+                print(f"\n❌ JSON解析失败: {e}")
+                print(f"原始响应内容:\n{content[:500]}")
+                raise
         return {"text": content}
 
 
@@ -338,8 +354,11 @@ class ValuriseOrchestrator:
     协调4个Agent的工作流程
     """
 
-    def __init__(self, api_key: str, model_main: str = "claude-sonnet-4-6"):
-        self.client = Anthropic(api_key=api_key)
+    def __init__(self, api_key: str, model_main: str = "claude-sonnet-4-6", base_url: str = None):
+        if base_url:
+            self.client = Anthropic(api_key=api_key, base_url=base_url)
+        else:
+            self.client = Anthropic(api_key=api_key)
         self.model = model_main
 
         # 初始化4个Agent

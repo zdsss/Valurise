@@ -212,6 +212,7 @@ def main():
     # 加载环境变量
     load_dotenv()
     api_key = os.getenv("ANTHROPIC_API_KEY")
+    base_url = os.getenv("ANTHROPIC_BASE_URL")
 
     if not api_key:
         console.print("[red]错误: 未找到ANTHROPIC_API_KEY[/red]")
@@ -243,7 +244,8 @@ def main():
     console.print("\n[bold]初始化多Agent系统...[/bold]")
     orchestrator = ValuriseOrchestrator(
         api_key=api_key,
-        model_main=os.getenv("MODEL_MAIN", "claude-sonnet-4-6")
+        model_main=os.getenv("MODEL_MAIN", "claude-sonnet-4-6"),
+        base_url=base_url
     )
 
     # 执行处理

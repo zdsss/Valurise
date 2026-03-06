@@ -1,7 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(cat > /Users/monet/Program/Repo/Valurise/backend/app/models/__init__.py << 'EOF'\n\"\"\"\nModels package\n导出所有模型\n\"\"\"\n\nfrom app.models.user import User\nfrom app.models.analysis import Analysis\nfrom app.models.order import Order\n\n__all__ = [\"User\", \"Analysis\", \"Order\"]\nEOF)",
+      "Bash(cat > /Users/monet/Program/Repo/Valurise/backend/app/api/__init__.py << 'EOF'\n\"\"\"\nAPI package\n导出所有路由\n\"\"\"\n\nfrom app.api import auth, analysis, payment, users\n\n__all__ = [\"auth\", \"analysis\", \"payment\", \"users\"]\nEOF)",
+      "Bash(cat > /Users/monet/Program/Repo/Valurise/backend/app/services/__init__.py << 'EOF'\n\"\"\"\nServices package\n\"\"\"\n\nfrom app.services.agent_service import agent_service\nfrom app.services.payment_service import payment_service\n\n__all__ = [\"agent_service\", \"payment_service\"]\nEOF)",
+      "Bash(cat > /Users/monet/Program/Repo/Valurise/backend/app/schemas/__init__.py << 'EOF'\n\"\"\"\nSchemas package\n\"\"\"\n\nfrom app.schemas import user, analysis, order\n\n__all__ = [\"user\", \"analysis\", \"order\"]\nEOF)",
+      "Bash(chmod +x /Users/monet/Program/Repo/Valurise/backend/start.sh)",
+      "Bash(chmod +x /Users/monet/Program/Repo/Valurise/backend/start_worker.sh)",
+      "Bash(cd /Users/monet/Program/Repo/Valurise && npm create vite@latest frontend -- --template react-ts)",
+      "Bash(cd /Users/monet/Program/Repo/Valurise/frontend && npm install)",
+      "Bash(npm install react-router-dom axios zustand react-hook-form zod @hookform/resolvers)",
+      "Bash(npm install zustand)",
+      "Bash(cat > /Users/monet/Program/Repo/Valurise/frontend/src/pages/LoginPage.tsx << 'EOF'\nexport default function LoginPage\\(\\) {\n  return \\(\n    <div className=\"p-8 bg-card rounded-lg shadow-lg\">\n      <h2 className=\"text-2xl font-bold mb-6\">登录</h2>\n      <p className=\"text-muted-foreground\">登录页面（待实现）</p>\n    </div>\n  \\);\n}\nEOF)",
+      "Bash(cat > /Users/monet/Program/Repo/Valurise/frontend/README.md << 'EOFREADME'\n# Valurise Frontend\n\nAI驱动的职业价值发现平台 - 前端应用\n\n## 技术栈\n\n- **框架**: React 18 + TypeScript\n- **构建工具**: Vite\n- **样式**: TailwindCSS\n- **路由**: React Router v6\n- **状态管理**: Zustand\n- **表单**: React Hook Form + Zod\n- **HTTP客户端**: Axios\n\n## 快速开始\n\n### 1. 安装依赖\n\n```bash\nnpm install\n```\n\n### 2. 配置环境变量\n\n```bash\ncp .env.example .env\n```\n\n### 3. 启动开发服务器\n\n```bash\nnpm run dev\n```\n\n访问 http://localhost:5173\n\n## 项目结构\n\n```\nsrc/\n├── components/          # 可复用组件\n├── pages/              # 页面组件\n├── lib/                # 工具库\n├── stores/             # Zustand状态管理\n├── types/              # TypeScript类型定义\n├── services/           # API服务\n└── App.tsx             # 根组件\n```\n\n## 开发指南\n\n详见项目文档。\n\n---\n\n**版本**: 1.0.0\nEOFREADME)"
     ]
   }
 }
